@@ -1,0 +1,63 @@
+body{
+    display: flex;
+    flex-direction: column;
+}
+#main{
+    align-self: center;
+    width: 800px;
+    height: 80%;
+    align-content: center;
+    align-self: center;
+    align-items: center;
+    text-align: center;
+}
+
+header{
+    align-self: center;
+    align-content: center;
+    text-align: center;
+}
+
+footer{
+    align-self: center;
+    align-content: center;
+    background-color: black;
+    width: 90%;
+    height: 7rem;
+    color: red;
+    align-content: center;
+    text-align: center;
+}
+
+#add{
+    width: 150px;
+    height: 20px;
+    
+}
+
+#addQ{
+    width: 150px;
+    height: 20px;
+    
+}
+
+#top{
+    align-self: center;
+}
+
+#topH{
+    align-self: center;
+    background-color: rebeccapurple;
+}
+
+#center{
+    align-self: center;
+    width: 800px;
+    height: 200px;
+    background-color: blue;
+}
+
+#container{
+    align-items: center;
+}
+
