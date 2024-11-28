@@ -5,13 +5,6 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-// MongoDB Verbindung
-mongoose.connect('mongodb+srv://admin:admin@dbwirtschaftsquiz.vjbjm.mongodb.net/?retryWrites=true&w=majority&appName=DBWirtschaftsquiz', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
 // **Schemas und Models**
 
 const questionSchema = new mongoose.Schema({
@@ -32,155 +25,166 @@ const collectionSchema = new mongoose.Schema({
 const Sammlungen = mongoose.model('Sammlungen', collectionSchema);
 const Fragen = mongoose.model('Fragen', questionSchema);
 
-// **REST-API Endpoints**
+// MongoDB Verbindung
+mongoose.connect('mongodb+srv://admin:admin@dbwirtschaftsquiz.vjbjm.mongodb.net/DBWirtschaftsquiz?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('MongoDB connected');
 
-/* --- GET REQUESTS --- */
+    // **REST-API Endpoints**
 
-// Alle Sammlungen abrufen
-app.get('/collections', async (req, res) => {
-    try {
-        const collections = await Sammlungen.find();
-        res.json(collections);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+    /* --- GET REQUESTS --- */
 
-// Alle Fragen abrufen
-app.get('/questions', async (req, res) => {
-    try {
-        const questions = await Fragen.find();
-        res.json(questions);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Frage nach ID abrufen
-app.get('/questions/:id', async (req, res) => {
-    try {
-        const question = await Fragen.findById(req.params.id);
-        if (!question) {
-            return res.status(404).json({ error: 'Frage nicht gefunden' });
+    // Alle Sammlungen abrufen
+    app.get('/collections', async (req, res) => {
+        try {
+            const collections = await mongoose.connection.db.collection('sammlungens').find().toArray();
+            res.status(200).json(collections);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
         }
-        res.json(question);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+    });
 
-// Fragen nach Fragesammlungsnamen und Quiznamen holen
-app.get('/questions/by-fragesammlung/:name', async (req, res) => {
-    try {
-        const questions = await Fragen.find({ fragesammlung: req.params.name });
-        res.json(questions);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Fragen nach Fragenamen holen
-app.get('/questions/by-fragename/:name', async (req, res) => {
-    try {
-        const questions = await Fragen.find({ frage: req.params.name });
-        res.json(questions);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-/* --- PUT REQUESTS --- */
-
-// Frage ändern basierend auf Fragesammlung oder Quiz
-app.put('/questions/update-by-collection-or-quiz', async (req, res) => {
-    try {
-        const { fragesammlung, quiz, updates } = req.body;
-        const updated = await Fragen.updateMany(
-            { $or: [{ fragesammlung }, { quiz }] },
-            { $set: updates }
-        );
-        res.json(updated);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Frage ändern basierend auf FrageID
-app.put('/questions/update/:id', async (req, res) => {
-    try {
-        const updated = await Fragen.findOneAndUpdate(
-            { frageID: req.params.id },
-            req.body,
-            { new: true }
-        );
-        res.json(updated);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Fragesammlung oder Quiz ändern basierend auf ID
-app.put('/collections/update/:id', async (req, res) => {
-    try {
-        const updated = await Sammlungen.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.json(updated);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-/* --- POST REQUESTS --- */
-
-// Neue Fragesammlung oder Quiz erstellen
-app.post('/collections', async (req, res) => {
-    try {
-        const newCollection = new Sammlungen(req.body);
-        await newCollection.save();
-        res.status(201).json(newCollection);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Neue Frage erstellen
-app.post('/questions', async (req, res) => {
-    try {
-        const newQuestion = new Fragen(req.body);
-        await newQuestion.save();
-        res.status(201).json(newQuestion);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-/* --- DELETE REQUESTS --- */
-
-// Frage löschen
-app.delete('/questions/:id', async (req, res) => {
-    try {
-        const deleted = await Fragen.findByIdAndDelete(req.params.id);
-        if (!deleted) {
-            return res.status(404).json({ error: 'Frage nicht gefunden' });
+    // Alle Fragen abrufen
+    app.get('/questions', async (req, res) => {
+        try {
+            const questions = await mongoose.connection.db.collection('fragens').find().toArray();
+            res.status(200).json(questions);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
         }
-        res.json({ message: 'Frage erfolgreich gelöscht' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+    });
 
-// Fragesammlung löschen
-app.delete('/collections/:id', async (req, res) => {
-    try {
-        const deleted = await Sammlungen.findByIdAndDelete(req.params.id);
-        if (!deleted) {
-            return res.status(404).json({ error: 'Sammlung nicht gefunden' });
+    // Frage nach ID abrufen
+    app.get('/questions/:id', async (req, res) => {
+        try {
+            const question = await mongoose.connection.db.collection('fragens').findOne({ _id: mongoose.Types.ObjectId(req.params.id) });
+            if (!question) {
+                return res.status(404).json({ error: 'Frage nicht gefunden' });
+            }
+            res.status(200).json(question);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
         }
-        res.json({ message: 'Sammlung erfolgreich gelöscht' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+    });
 
-// Server starten
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
+    // Fragen nach Fragesammlungsnamen holen
+    app.get('/questions/by-fragesammlung/:name', async (req, res) => {
+        try {
+            const questions = await mongoose.connection.db.collection('fragens').find({ fragesammlung: req.params.name }).toArray();
+            res.status(200).json(questions);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    // Fragen nach Fragenamen holen
+    app.get('/questions/by-fragename/:name', async (req, res) => {
+        try {
+            const questions = await mongoose.connection.db.collection('fragens').find({ frage: req.params.name }).toArray();
+            res.status(200).json(questions);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    /* --- PUT REQUESTS --- */
+
+    // Frage ändern basierend auf Fragesammlung oder Quiz
+    app.put('/questions/update-by-collection-or-quiz', async (req, res) => {
+        try {
+            const { fragesammlung, quiz, updates } = req.body;
+            const updated = await mongoose.connection.db.collection('fragens').updateMany(
+                { $or: [{ fragesammlung }, { quiz }] },
+                { $set: updates }
+            );
+            res.status(200).json(updated);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    // Frage ändern basierend auf FrageID
+    app.put('/questions/update/:id', async (req, res) => {
+        try {
+            const updated = await mongoose.connection.db.collection('fragens').findOneAndUpdate(
+                { frageID: req.params.id },
+                { $set: req.body },
+                { returnOriginal: false }
+            );
+            res.status(200).json(updated.value);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    // Fragesammlung oder Quiz ändern basierend auf ID
+    app.put('/collections/update/:id', async (req, res) => {
+        try {
+            const updated = await mongoose.connection.db.collection('sammlungens').findOneAndUpdate(
+                { _id: mongoose.Types.ObjectId(req.params.id) },
+                { $set: req.body },
+                { returnOriginal: false }
+            );
+            res.status(200).json(updated.value);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    /* --- POST REQUESTS --- */
+
+    // Neue Fragesammlung oder Quiz erstellen
+    app.post('/collections', async (req, res) => {
+        try {
+            const result = await mongoose.connection.db.collection('sammlungens').insertOne(req.body);
+            res.status(201).json(result.ops[0]);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    // Neue Frage erstellen
+    app.post('/questions', async (req, res) => {
+        try {
+            const result = await mongoose.connection.db.collection('fragens').insertOne(req.body);
+            res.status(201).json(result.ops[0]);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    /* --- DELETE REQUESTS --- */
+
+    // Frage löschen
+    app.delete('/questions/:id', async (req, res) => {
+        try {
+            const deleted = await mongoose.connection.db.collection('fragens').deleteOne({ _id: mongoose.Types.ObjectId(req.params.id) });
+            if (deleted.deletedCount === 0) {
+                return res.status(404).json({ error: 'Frage nicht gefunden' });
+            }
+            res.status(200).json({ message: 'Frage erfolgreich gelöscht' });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    // Fragesammlung löschen
+    app.delete('/collections/:id', async (req, res) => {
+        try {
+            const deleted = await mongoose.connection.db.collection('sammlungens').deleteOne({ _id: mongoose.Types.ObjectId(req.params.id) });
+            if (deleted.deletedCount === 0) {
+                return res.status(404).json({ error: 'Sammlung nicht gefunden' });
+            }
+            res.status(200).json({ message: 'Sammlung erfolgreich gelöscht' });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+    // Server starten
+    const PORT = 3000;
+    app.listen(PORT, () => console.log(`Server läuft auf Port ${PORT}`));
+
+}).catch(err => console.error('MongoDB connection error:', err));
