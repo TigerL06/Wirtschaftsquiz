@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // MongoDB Atlas Verbindung
-const MONGO_URI = "mongodb+srv://<username>:<password>@cluster0.mongodb.net/quizDB?retryWrites=true&w=majority";
+const MONGO_URI = "mongodb+srv://lucajw05:5nk8i2AdBHfThzy0@dbwirtschaftsquiz.vjbjm.mongodb.net/?retryWrites=true&w=majority&appName=DBWirtschaftsquiz";
 
 mongoose
   .connect(MONGO_URI, {

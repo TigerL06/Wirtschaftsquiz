@@ -5,6 +5,7 @@ let user = "lehrer"
 let password = "supertool"
 let buttonL = document.querySelector("#login");
 let art;
+let numberQuestion = 0;
 
 
 buttonL.addEventListener("click", function () {
@@ -303,8 +304,10 @@ function multi(){
     
     if( art === "Fragensammlung"){
       addF();
+      numberQuestion++;
     }else if(art === "Quiz"){
       addQ();
+      numberQuestion++;
     }
   });
 
@@ -350,8 +353,10 @@ function normal(){
     
     if( art === "Fragensammlung"){
       addF();
+      numberQuestion++;
     }else if(art === "Quiz"){
       addQ();
+      numberQuestion++;
     }
   });
 
@@ -405,8 +410,10 @@ function trueA(){
     
     if( art === "Fragensammlung"){
       addF();
+      numberQuestion++;
     }else if(art === "Quiz"){
       addQ();
+      numberQuestion++;
     }
   });
 
