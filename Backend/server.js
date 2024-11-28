@@ -29,35 +29,52 @@ const collectionSchema = new mongoose.Schema({
     type: { type: String, enum: ['Fragesammlung', 'Quiz'], required: true }
 });
 
-const Question = mongoose.model('Question', questionSchema);
-const Collection = mongoose.model('Collection', collectionSchema);
+// Zugriff auf die Verbindung
+const db = mongoose.connection;
+
+// Zugriff auf spezifische Collections
+const sammlungenCollection = db.collection('Sammlungen');
+const fragenCollection = db.collection('Fragen');
 
 // **REST-API Endpoints**
 
 /* --- GET REQUESTS --- */
 
-// Alle Fragesammlungen oder Quiz holen
+
+// Alle Sammlungen abrufen
 app.get('/collections', async (req, res) => {
-    try {
-        const collections = await Collection.find();
-        res.json(collections);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+  try {
+      const collections = await sammlungenCollection.find().toArray(); // Greift auf die Collection "Sammlungen" zu
+      res.json(collections);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
 });
 
-// Fragesammlung oder Quiz nach ID holen
-app.get('/collections/:id', async (req, res) => {
-    try {
-        const collection = await Collection.findById(req.params.id);
-        if (!collection) return res.status(404).json({ error: 'Not found' });
-        res.json(collection);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+// Alle Fragen abrufen
+app.get('/questions', async (req, res) => {
+  try {
+      const questions = await fragenCollection.find().toArray(); // Greift auf die Collection "Fragen" zu
+      res.json(questions);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
 });
 
-// Fragen nach Fragesammlungsnamen holen
+// Frage nach ID abrufen
+app.get('/questions/:id', async (req, res) => {
+  try {
+      const question = await fragenCollection.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) });
+      if (!question) {
+          return res.status(404).json({ error: 'Frage nicht gefunden' });
+      }
+      res.json(question);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+});
+
+// Fragen nach Fragesammlungsnamen und Quiznamen holen
 app.get('/questions/by-fragesammlung/:name', async (req, res) => {
     try {
         const questions = await Question.find({ fragesammlung: req.params.name });
@@ -67,15 +84,6 @@ app.get('/questions/by-fragesammlung/:name', async (req, res) => {
     }
 });
 
-// Fragen nach Quiznamen holen
-app.get('/questions/by-quiz/:name', async (req, res) => {
-    try {
-        const questions = await Question.find({ quiz: req.params.name });
-        res.json(questions);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
 
 // Fragen nach Fragenamen holen
 app.get('/questions/by-fragename/:name', async (req, res) => {
