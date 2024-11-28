@@ -22,30 +22,34 @@ footer{
     align-self: center;
     align-content: center;
     background-color: black;
-    width: 90%;
-    height: 7rem;
+    width: 100%;
+    height: 11rem;
     color: red;
     align-content: center;
     text-align: center;
 }
 
 #add{
+    width: 100%;
     width: 150px;
     height: 20px;
     
 }
 
 #addQ{
+    width: 100%;
     width: 150px;
     height: 20px;
     
 }
 
 #top{
+    width: 100%;
     align-self: center;
 }
 
 #topH{
+    width: 100%;
     align-self: center;
     background-color: rebeccapurple;
 }
@@ -53,7 +57,7 @@ footer{
 #center{
     align-self: center;
     width: 800px;
-    height: 200px;
+    height: 400px;
     background-color: blue;
 }
 
@@ -61,3 +65,21 @@ footer{
     align-items: center;
 }
 
+#back{
+    float: left;
+}
+
+#finish{
+    float: right;
+}
+
+p{
+    align-self: center;
+}
+
+#fragST{
+    align-self: center;
+    width: 800px;
+    height: 400px;
+    background-color: red;
+}
