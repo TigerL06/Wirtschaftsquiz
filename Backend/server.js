@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // MongoDB Verbindung
-mongoose.connect('mongodb+srv://lucajw05:5nk8i2AdBHfThzy0@dbwirtschaftsquiz.vjbjm.mongodb.net/?retryWrites=true&w=majority&appName=DBWirtschaftsquiz', {
+mongoose.connect('mongodb+srv://admin:admin@dbwirtschaftsquiz.vjbjm.mongodb.net/?retryWrites=true&w=majority&appName=DBWirtschaftsquiz', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected'))
