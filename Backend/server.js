@@ -44,7 +44,7 @@ const fragenCollection = db.collection('Fragen');
 // Alle Sammlungen abrufen
 app.get('/collections', async (req, res) => {
   try {
-      const collections = await sammlungenCollection.find().toArray(); // Greift auf die Collection "Sammlungen" zu
+      const collections = await sammlungenCollection.find(); // Greift auf die Collection "Sammlungen" zu
       res.json(collections);
   } catch (err) {
       res.status(500).json({ error: err.message });
@@ -54,7 +54,7 @@ app.get('/collections', async (req, res) => {
 // Alle Fragen abrufen
 app.get('/questions', async (req, res) => {
   try {
-      const questions = await fragenCollection.find().toArray(); // Greift auf die Collection "Fragen" zu
+      const questions = await fragenCollection.find(); // Greift auf die Collection "Fragen" zu
       res.json(questions);
   } catch (err) {
       res.status(500).json({ error: err.message });
@@ -77,7 +77,7 @@ app.get('/questions/:id', async (req, res) => {
 // Fragen nach Fragesammlungsnamen und Quiznamen holen
 app.get('/questions/by-fragesammlung/:name', async (req, res) => {
     try {
-        const questions = await Question.find({ fragesammlung: req.params.name });
+        const questions = await fragenCollection.find({ fragesammlung: req.params.name });
         res.json(questions);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -88,7 +88,7 @@ app.get('/questions/by-fragesammlung/:name', async (req, res) => {
 // Fragen nach Fragenamen holen
 app.get('/questions/by-fragename/:name', async (req, res) => {
     try {
-        const questions = await Question.find({ frage: req.params.name });
+        const questions = await fragenCollection.find({ frage: req.params.name });
         res.json(questions);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -101,7 +101,7 @@ app.get('/questions/by-fragename/:name', async (req, res) => {
 app.put('/questions/update-by-collection-or-quiz', async (req, res) => {
     try {
         const { fragesammlung, quiz, updates } = req.body;
-        const updated = await Question.updateMany(
+        const updated = await fragenCollection.updateMany(
             { $or: [{ fragesammlung }, { quiz }] },
             { $set: updates }
         );
@@ -114,7 +114,7 @@ app.put('/questions/update-by-collection-or-quiz', async (req, res) => {
 // Frage ändern basierend auf FrageID
 app.put('/questions/update/:id', async (req, res) => {
     try {
-        const updated = await Question.findOneAndUpdate(
+        const updated = await fragenCollection.findOneAndUpdate(
             { frageID: req.params.id },
             req.body,
             { new: true }
@@ -128,7 +128,7 @@ app.put('/questions/update/:id', async (req, res) => {
 // Fragesammlung oder Quiz ändern basierend auf ID
 app.put('/collections/update/:id', async (req, res) => {
     try {
-        const updated = await Collection.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const updated = await sammlungenCollection.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json(updated);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -140,7 +140,7 @@ app.put('/collections/update/:id', async (req, res) => {
 // Neue Fragesammlung oder Quiz erstellen
 app.post('/collections', async (req, res) => {
     try {
-        const newCollection = new Collection(req.body);
+        const newCollection = new sammlungenCollection(req.body);
         await newCollection.save();
         res.status(201).json(newCollection);
     } catch (err) {
@@ -151,7 +151,7 @@ app.post('/collections', async (req, res) => {
 // Neue Frage erstellen
 app.post('/questions', async (req, res) => {
     try {
-        const newQuestion = new Question(req.body);
+        const newQuestion = new fragenCollection(req.body);
         await newQuestion.save();
         res.status(201).json(newQuestion);
     } catch (err) {
