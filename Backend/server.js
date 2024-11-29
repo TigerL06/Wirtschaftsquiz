@@ -25,7 +25,7 @@ const Sammlungen = mongoose.model('Sammlungen', collectionSchema);
 const Fragen = mongoose.model('Fragen', questionSchema);
 
 // MongoDB Verbindung
-mongoose.connect('mongodb+srv://admin:admin@dbwirtschaftsquiz.vjbjm.mongodb.net/DBWirtschaftsquiz?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://admin:admin@dbwirtschaftsquiz.vjbjm.mongodb.net/?retryWrites=true&w=majority&appName=DBWirtschaftsquiz')
     .then(() => {
         console.log('MongoDB connected');
 
