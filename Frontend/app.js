@@ -299,15 +299,21 @@ function multi(){
 
   button.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
-    container.remove();
-    containerM.remove();
-    
-    if( art === "Fragensammlung"){
-      addF();
-      numberQuestion++;
-    }else if(art === "Quiz"){
-      addQ();
-      numberQuestion++;
+    let input = document.querySelector("#nameFS");
+    let title = document.querySelector("#titelF")
+    if(input.value === ""){
+      title.innerHTML = "Es fehlt der Name der Fragesammlung"
+      title.style.color = "red";
+    }else {
+      container.remove();
+      containerM.remove();
+      if( art === "Fragensammlung"){
+        addF();
+        numberQuestion++;
+      }else if(art === "Quiz"){
+        addQ();
+        numberQuestion++;
+      }
     }
   });
 
@@ -348,16 +354,23 @@ function normal(){
 
   button.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
-    container.remove();
-    containerM.remove();
-    
-    if( art === "Fragensammlung"){
-      addF();
-      numberQuestion++;
-    }else if(art === "Quiz"){
-      addQ();
-      numberQuestion++;
+    let input = document.querySelector("#nameFS");
+    let title = document.querySelector("#titelF")
+    if(input.value === ""){
+      title.innerHTML = "Es fehlt der Name der Fragesammlung"
+      title.style.color = "red";
+    }else {
+      container.remove();
+      containerM.remove();
+      if( art === "Fragensammlung"){
+        addF();
+        numberQuestion++;
+      }else if(art === "Quiz"){
+        addQ();
+        numberQuestion++;
+      }
     }
+    
   });
 
 }
@@ -405,15 +418,21 @@ function trueA(){
 
   button.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
-    container.remove();
-    containerM.remove();
-    
-    if( art === "Fragensammlung"){
-      addF();
-      numberQuestion++;
-    }else if(art === "Quiz"){
-      addQ();
-      numberQuestion++;
+    let input = document.querySelector("#nameFS");
+    let title = document.querySelector("#titelF")
+    if(input.value === ""){
+      title.innerHTML = "Es fehlt der Name der Fragesammlung"
+      title.style.color = "red";
+    }else {
+      container.remove();
+      containerM.remove();
+      if( art === "Fragensammlung"){
+        addF();
+        numberQuestion++;
+      }else if(art === "Quiz"){
+        addQ();
+        numberQuestion++;
+      }
     }
   });
 
@@ -446,4 +465,20 @@ function trueA(){
       container.appendChild(text);
     }
   });
+}
+
+function postQuestion(frageID, fragesammlung, quiz, frage, antwort,modus, auswahl){
+
+}
+
+function postSammlung(name, type){
+
+}
+
+function getSammlungen(id){
+
+}
+
+function getQuestionfromSammlung(sammlung){
+
 }
