@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 
 const app = express();
 app.use(express.json());
+const cors = require('cors');
+app.use(cors());
+
 
 // **Schemas und Models**
 
@@ -56,7 +59,7 @@ mongoose.connect('mongodb+srv://admin:admin@dbwirtschaftsquiz.vjbjm.mongodb.net/
         // Frage nach ID abrufen
         app.get('/questions/:id', async (req, res) => {
             try {
-                const question = await mongoose.connection.db.collection('fragens').findOne({ _id: mongoose.Types.ObjectId(req.params.id) });
+                const question = await mongoose.connection.db.collection('fragens').findOne({ _id: new mongoose.Types.ObjectId(req.params.id) });
                 if (!question) {
                     return res.status(404).json({ error: 'Frage nicht gefunden' });
                 }
@@ -106,7 +109,7 @@ mongoose.connect('mongodb+srv://admin:admin@dbwirtschaftsquiz.vjbjm.mongodb.net/
         app.put('/questions/update/:id', async (req, res) => {
             try {
                 const updated = await mongoose.connection.db.collection('fragens').findOneAndUpdate(
-                    { frageID: req.params.id },
+                    { _id: new mongoose.Types.ObjectId(req.params.id) },
                     { $set: req.body },
                     { returnOriginal: false }
                 );
@@ -120,7 +123,7 @@ mongoose.connect('mongodb+srv://admin:admin@dbwirtschaftsquiz.vjbjm.mongodb.net/
         app.put('/collections/update/:id', async (req, res) => {
             try {
                 const updated = await mongoose.connection.db.collection('sammlungens').findOneAndUpdate(
-                    { _id: mongoose.Types.ObjectId(req.params.id) },
+                    { _id: new mongoose.Types.ObjectId(req.params.id) },
                     { $set: req.body },
                     { returnOriginal: false }
                 );

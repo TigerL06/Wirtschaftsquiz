@@ -57,12 +57,16 @@ footer{
 #center{
     align-self: center;
     width: 800px;
-    height: 400px;
+    height: auto;
     background-color: blue;
+    align-items: center;
+    align-content: center;
 }
 
 #container{
     align-items: center;
+    align-self: center;
+    align-content: center;
 }
 
 #back{
@@ -82,4 +86,12 @@ p{
     width: 800px;
     height: 400px;
     background-color: red;
+}
+
+.collection {
+    width: 100px;
+    height: 100px;
+    align-self: center;
+    background-color: red;
+    margin: 70px;
 }
