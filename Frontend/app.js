@@ -852,11 +852,10 @@ function normalEdit(frageID, frage, antwort, id, name){
   parent.appendChild(containerM);
 
 
-  buttonB.addEventListener("click", function () {
+  bbuttonB.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
-    if (containerM) {
-      containerM.remove();
-    }
+   container.remove();
+    containerM.remove();
   });
   
   button.addEventListener("click", function () {
@@ -925,9 +924,8 @@ function trueEdit(frageID, frage, antwort, id, name){
 
   buttonB.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
-    if (containerM) {
-      containerM.remove();
-    }
+   container.remove();
+    containerM.remove();
   });
   
   button.addEventListener("click", function () {
@@ -1042,12 +1040,11 @@ function multiEdit(frageID, frage, antwort, auswahl, auswahl2, auswahl3, id, nam
 
   buttonB.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
-    if (containerM) {
-      containerM.remove();
-    }
+   container.remove();
+    containerM.remove();
   });
   
-  button.addEventListener("click", function () {
+  buttonB.addEventListener("click", function(){
     let containerM = document.querySelector("#container");
       container.remove();
       containerM.remove();
