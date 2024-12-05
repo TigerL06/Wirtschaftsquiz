@@ -189,3 +189,4 @@ mongoose.connect('mongodb+srv://admin:admin@dbwirtschaftsquiz.vjbjm.mongodb.net/
 
     })
     .catch(err => console.error('MongoDB connection error:', err));
+    

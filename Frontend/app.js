@@ -670,7 +670,30 @@ async function putCollection(id, _name) {
 
 }
 
-async function putQuestion(id) {
+async function putQuestion(id, question, answer, type, option) {
+  const updatName = { 
+    frage: question,
+    antwort: answer,
+    auswahl: option
+  };
+  let _id = id;
+  console.log(_id)
+  console.log('http://localhost:3000/questions/update/${id}')
+  const response = await fetch(`http://localhost:3000/collections/update/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(updatName)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Fehler beim Aktualisieren der Fragensammlung: ${response.status}`);
+  }
+
+  const updatedCollection = await response.json();
+  console.log("Fragensammlung erfolgreich aktualisiert:", updatedCollection);
+  alert("Fragensammlung erfolgreich aktualisiert!");
   
 }
 
@@ -810,6 +833,8 @@ async function editQuestion(fragesammlung, id) {
 }
 
 function normalEdit(frageID, frage, antwort, id, name){
+  let type = "normal";
+  let option = "";
   let title = document.querySelector("#header")
   title.innerHTML = "Frage verändern";
   title.style.color = "black";
@@ -861,12 +886,14 @@ function normalEdit(frageID, frage, antwort, id, name){
     let containerM = document.querySelector("#container");
     container.remove();
     containerM.remove();
-    putQuestion(frageID);
+    putQuestion(frageID, inputQ.value, inputA.value, type, option);
     editSammlung(id, name);
   });
 }
 
 function trueEdit(frageID, frage, antwort, id, name){
+  let type = "true or false";
+  let option = "";
   let title = document.querySelector("#header")
   title.innerHTML = "Frage bearbeiten";
   let containerM = document.createElement("div")
@@ -930,7 +957,7 @@ function trueEdit(frageID, frage, antwort, id, name){
     let containerM = document.querySelector("#container");
       container.remove();
       containerM.remove();
-      putQuestion(frageID);
+      putQuestion(frageID, inputQ.value, answer, type, option);
       editSammlung(id, name);
   });
 
@@ -963,6 +990,8 @@ function trueEdit(frageID, frage, antwort, id, name){
 }
 
 function multiEdit(frageID, frage, antwort, auswahl, auswahl2, auswahl3, id, name){
+  let type = "multiple choice";
+  let option = [];
   let title = document.querySelector("#header")
   title.innerHTML = "Frage verändern";
   title.style.color = "black";
@@ -1045,9 +1074,10 @@ function multiEdit(frageID, frage, antwort, auswahl, auswahl2, auswahl3, id, nam
     let containerM = document.querySelector("#container");
       container.remove();
       containerM.remove();
-      putQuestion(frageID);
+      option [0] = inputO1.value;
+      option [1] = inputO2.value;
+      option [2] = inputO3.value;
+      putQuestion(frageID, inputQ.value, inputA.value, type, option);
       editSammlung(id, name);
   });
 }
-
-
