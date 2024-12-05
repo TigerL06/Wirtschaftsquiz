@@ -852,11 +852,13 @@ function normalEdit(frageID, frage, antwort, id, name){
   parent.appendChild(containerM);
 
 
-  buttonB.addEventListener("click", function(){
+  buttonB.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
-    container.remove();
-    containerM.remove();
+    if (containerM) {
+      containerM.remove();
+    }
   });
+  
   button.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
     container.remove();
@@ -921,11 +923,13 @@ function trueEdit(frageID, frage, antwort, id, name){
   parent.appendChild(containerM);
 
 
-  buttonB.addEventListener("click", function(){
+  buttonB.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
-    container.remove();
-    containerM.remove();
+    if (containerM) {
+      containerM.remove();
+    }
   });
+  
   button.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
       container.remove();
@@ -1036,11 +1040,13 @@ function multiEdit(frageID, frage, antwort, auswahl, auswahl2, auswahl3, id, nam
   parent.appendChild(containerM);
 
 
-  buttonB.addEventListener("click", function(){
+  buttonB.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
-    container.remove();
-    containerM.remove();
+    if (containerM) {
+      containerM.remove();
+    }
   });
+  
   button.addEventListener("click", function () {
     let containerM = document.querySelector("#container");
       container.remove();
